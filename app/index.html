@@ -96,7 +96,6 @@
         .modal-content h2 { font-family: var(--font-b); color: var(--accent); margin-bottom: 15px; font-size: 1.5rem; }
         .modal-content p { font-size: 0.95rem; color: var(--text); margin-bottom: 20px; line-height: 1.5; }
 
-        
         /* ANTI-PIRACY */
         .chap-page, .toc-name, .chapter-title {
             -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
@@ -274,7 +273,7 @@
                     p_code: code,
                     p_device_id: getDeviceId(),
                     p_referrer_code: referrer,
-                    p_email: email // <-- Sending email to DB
+                    p_email: email
                 });
 
                 if (error) throw error;
@@ -376,16 +375,26 @@
 
         async function fetchBookData() {
             if (bookData.length > 0) return; 
-            
+            if (isNative && !sqliteDb) await initDB();
+
             const code = localStorage.getItem('access_code');
             const deviceId = getDeviceId();
-            const cachedEncrypted = localStorage.getItem('encrypted_web_book');
 
-            // 1. Try Encrypted LocalStorage Cache
-            if (cachedEncrypted && code) {
-                const decryptedText = await decryptText(cachedEncrypted, code, deviceId);
-                if (decryptedText) {
-                    try { bookData = JSON.parse(decryptedText); buildTOCList(); return; } catch (e) {}
+            // 1. Try Local Cache
+            if (isNative && sqliteDb) {
+                try {
+                    const res = await sqliteDb.query("SELECT * FROM chapters ORDER BY id ASC");
+                    if (res.values && res.values.length > 0) {
+                        bookData = res.values; buildTOCList(); return;
+                    }
+                } catch (e) { console.error("Native DB Read Error:", e); }
+            } else {
+                const cachedEncrypted = localStorage.getItem('encrypted_web_book');
+                if (cachedEncrypted && code) {
+                    const decryptedText = await decryptText(cachedEncrypted, code, deviceId);
+                    if (decryptedText) {
+                        try { bookData = JSON.parse(decryptedText); buildTOCList(); return; } catch (e) { console.error("Cache parse error"); }
+                    }
                 }
             }
 
@@ -396,36 +405,23 @@
                 bookData = data || [];
                 buildTOCList();
 
-                // 3. Encrypt and save
-                if (bookData.length > 0 && code) {
-                    const rawText = JSON.stringify(bookData);
-                    const encrypted = await encryptText(rawText, code, deviceId);
-                    localStorage.setItem('encrypted_web_book', encrypted);
-                }
-            } catch (err) { showError("Fetch Error: " + err.message); }
-        } catch (e) { console.error("DB Read Error:", e); }
-            } else {
-                const cached = localStorage.getItem('web_cached_book');
-                if (cached) { bookData = JSON.parse(cached); buildTOCList(); return; }
-            }
-
-            try {
-                const { data, error } = await db.from('chapters').select('*').order('chapter_number', { ascending: true });
-                if (error) throw error;
-                bookData = data || [];
-                buildTOCList();
-
+                // 3. Save to Local Cache
                 if (bookData.length > 0) {
                     if (isNative && sqliteDb) {
                         await sqliteDb.execute("DELETE FROM chapters;"); 
                         for (let chap of bookData) {
                             await sqliteDb.run("INSERT INTO chapters (id, title, content) VALUES (?, ?, ?);", [chap.chapter_number, chap.title, chap.content]);
                         }
-                    } else {
-                        localStorage.setItem('web_cached_book', JSON.stringify(bookData));
+                    } else if (code) {
+                        const rawText = JSON.stringify(bookData);
+                        const encrypted = await encryptText(rawText, code, deviceId);
+                        localStorage.setItem('encrypted_web_book', encrypted);
                     }
                 }
-            } catch (err) { showError("Fetch Error: " + err.message); }
+            } catch (err) { 
+                showError("Fetch Error: " + err.message); 
+                console.error("Fetch Error:", err);
+            }
         }
 
         function buildTOCList() {
@@ -546,13 +542,10 @@
     </script>
 
     <script>
-        // Disable right-click
+        // Disable right-click, copy, and cut to protect content
         document.addEventListener('contextmenu', event => event.preventDefault());
-        // Disable copy
         document.addEventListener('copy', event => event.preventDefault());
-        // Disable cut
         document.addEventListener('cut', event => event.preventDefault());
     </script>
-
 </body>
 </html>
