@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>From Dull to Genius | Official Website</title>
-    <!-- Supabase Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
@@ -17,14 +16,12 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: var(--font-ui); background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
 
-        /* NAVBAR */
         nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: var(--card-bg); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
         .nav-logo { font-family: var(--font-body); font-size: 1.2rem; font-weight: bold; color: var(--accent-color); text-decoration: none; }
         .nav-links { display: flex; gap: 20px; align-items: center; }
         .nav-links a { text-decoration: none; color: var(--text-color); font-weight: bold; font-size: 0.9rem; }
         .nav-btn { background: var(--accent-color); color: white !important; padding: 8px 16px; border-radius: 20px; }
 
-        /* HERO */
         .hero { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; padding: 80px 5%; gap: 50px; max-width: 1200px; margin: 0 auto; }
         .hero-text { flex: 1; min-width: 300px; }
         .hero-text h1 { font-size: 3rem; font-family: var(--font-body); color: var(--accent-color); line-height: 1.1; margin-bottom: 20px; }
@@ -40,14 +37,12 @@
         .book-3d h2 { font-family: var(--font-body); font-size: 1.8rem; text-align: center; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
         .book-3d p { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; }
 
-        /* FEATURES */
         .features { background: var(--card-bg); padding: 80px 5%; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
         .features-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; }
         .feature-card { text-align: center; }
         .feature-card h3 { font-size: 1.2rem; margin-bottom: 10px; color: var(--accent-color); }
         .feature-card p { font-size: 0.95rem; color: #555; }
 
-        /* PRICING */
         .pricing { padding: 80px 5%; text-align: center; }
         .pricing h2 { font-size: 2rem; font-family: var(--font-body); margin-bottom: 10px; }
         .pricing p { color: #555; margin-bottom: 40px; }
@@ -60,11 +55,9 @@
         .whatsapp-btn.secondary { background-color: #128C7E; }
         .whatsapp-btn svg { width: 24px; height: 24px; margin-right: 10px; fill: white; }
 
-        /* FOOTER */
         footer { background: var(--text-color); color: white; text-align: center; padding: 40px 20px; font-size: 0.9rem; }
         footer a { color: var(--bg-color); text-decoration: none; }
 
-        /* MODAL */
         #toc-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; display: none; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(4px); }
         #toc-modal.open { display: flex; }
         .modal-content { background: var(--bg-color); border-radius: 16px; width: 100%; max-width: 500px; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0,0,0,0.2); overflow: hidden; }
@@ -81,7 +74,6 @@
         .spinner { border: 4px solid rgba(0,0,0,0.1); border-left-color: var(--accent-color); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin-bottom: 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* MOBILE */
         @media (max-width: 768px) {
             nav { flex-direction: column; gap: 15px; padding: 15px 5%; text-align: center; }
             .nav-links { width: 100%; justify-content: center; flex-wrap: wrap; }
@@ -92,7 +84,6 @@
             .book-3d { width: 220px; height: 330px; margin-top: 30px; }
         }
 
-        /* WELCOME MODAL */
         #welcome-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(18, 18, 18, 0.95); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; padding: 20px; transition: opacity 0.5s ease; }
         #welcome-screen h1 { font-family: var(--font-body); font-size: 2.5rem; color: #f5af19; margin-bottom: 15px; }
         #welcome-screen p { font-size: 1.1rem; margin-bottom: 30px; max-width: 500px; color: #ccc; }
@@ -108,7 +99,6 @@
         <button class="enter-btn" onclick="enterSite()">Enter Website 🎉</button>
     </div>
 
-    <!-- TOC MODAL -->
     <div id="toc-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -137,11 +127,9 @@
             <h1>How to Make All A's and Top the Class Without STRESS.</h1>
             <p>Stop struggling with boring textbooks. Learn the hidden secrets of academic success in plain, relatable Nigerian gist. Written by BFL's #1 Mentor.</p>
             <div class="hero-buttons">
-                <!-- View TOC Button -->
                 <button class="btn-secondary" onclick="openTOCModal()">📑 View TOC for Free</button>
                 
-                <!-- Download APK -->
-                <a href="DullToGenius.apk" download class="btn-primary">
+                <a href="DullToGenius.apk" download class="btn-primary" onclick="trackEvent('Download', 'APK')">
                     📱 Download Book App
                 </a>
             </div>
@@ -181,13 +169,11 @@
             <div class="price-new">₦4,800</div>
             <p style="margin-bottom: 20px; font-size: 0.9rem;">Pay via manual transfer and get your access code instantly on WhatsApp.</p>
             
-            <a href="https://wa.me/2347062605368?text=Hello%20Head%20of%20Operations%2C%20I%20want%20to%20buy%20the%20book%20'From%20Dull%20to%20Genius'%20for%20N4800.%20Please%20send%20me%20my%20access%20code." target="_blank" class="whatsapp-btn">
-                <svg viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-3.825 3.113-6.937 6.937-6.937 3.825 0 6.936 3.112 6.936 6.936s-3.111 6.944-6.936 6.944z"/></svg>
+            <a href="https://wa.me/2347062605368?text=Hello%20Head%20of%20Operations%2C%20I%20want%20to%20buy%20From%20Dull%20to%20Genius%20for%20N4800.%20Please%20send%20me%20my%20access%20code." target="_blank" class="whatsapp-btn" onclick="trackEvent('WhatsApp', 'Operations')">
                 DM Head of Operations
             </a>
 
-            <a href="https://wa.me/2347015013920?text=Hello%20Head%20of%20Marketing%2C%20I%20want%20to%20buy%20the%20book%20'From%20Dull%20to%20Genius'%20for%20N4800.%20Please%20send%20me%20my%20access%20code." target="_blank" class="whatsapp-btn secondary">
-                <svg viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-3.825 3.113-6.937 6.937-6.937 3.825 0 6.936 3.112 6.936 6.936s-3.111 6.944-6.936 6.944z"/></svg>
+            <a href="https://wa.me/2347015013920?text=Hello%20Head%20of%20Marketing%2C%20I%20want%20to%20buy%20From%20Dull%20to%20Genius%20for%20N4800.%20Please%20send%20me%20my%20access%20code." target="_blank" class="whatsapp-btn secondary" onclick="trackEvent('WhatsApp', 'Marketing')">
                 DM Head of Marketing
             </a>
         </div>
@@ -200,6 +186,32 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
+        // --- SUPABASE & TRACKING SETUP ---
+        const SUPABASE_URL = 'https://ayjxzayhtcxekvjepgax.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_BIOlB9IWlxsvWuRvzMJo_Q_EM57iDGM';
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        // Generate a unique device ID for analytics
+        let deviceId = localStorage.getItem('site_device_id');
+        if (!deviceId) {
+            deviceId = 'web_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('site_device_id', deviceId);
+        }
+
+        // Tracking function
+        async function trackEvent(action, details = "") {
+            try {
+                await db.from('tracking_events').insert([{ 
+                    device_id: deviceId, 
+                    action: action, 
+                    details: details 
+                }]);
+            } catch (e) { console.log("Tracking error", e); }
+        }
+
+        // Track Page View immediately
+        trackEvent('Page View', 'Homepage');
+
         // --- CONFETTI ---
         function enterSite() {
             confetti({ particleCount: 300, spread: 160, origin: { y: 0.8 }, startVelocity: 60, gravity: 1.2, scalar: 1.2, ticks: 150 });
@@ -208,53 +220,36 @@
             setTimeout(() => { welcomeScreen.style.display = 'none'; }, 500);
         }
 
-        // --- TOC MODAL & SUPABASE ---
-        const SUPABASE_URL = 'https://ayjxzayhtcxekvjepgax.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_BIOlB9IWlxsvWuRvzMJo_Q_EM57iDGM';
-        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        // --- TOC MODAL ---
         let tocLoaded = false;
 
         async function openTOCModal() {
             document.getElementById('toc-modal').classList.add('open');
+            trackEvent('Button Click', 'View TOC');
             
-            // Only fetch from DB once
             if (tocLoaded) return;
-
             try {
                 const { data, error } = await db.from('chapters').select('title').order('chapter_number', { ascending: true });
                 if (error) throw error;
-
                 const body = document.getElementById('toc-body');
-                body.innerHTML = ''; // Clear spinner
-
+                body.innerHTML = ''; 
                 data.forEach(chap => {
                     const parts = chap.title.split(':');
                     const label = parts.length > 1 ? parts[0].trim() : '';
                     const name = parts.length > 1 ? parts.slice(1).join(':').trim() : chap.title;
-
                     const div = document.createElement('div');
                     div.className = 'toc-item';
-                    div.innerHTML = `
-                        ${label ? `<span class="toc-label">${label}</span>` : ''}
-                        <span class="toc-name">${name}</span>
-                    `;
+                    div.innerHTML = `${label ? `<span class="toc-label">${label}</span>` : ''}<span class="toc-name">${name}</span>`;
                     body.appendChild(div);
                 });
-                
                 tocLoaded = true;
             } catch (err) {
-                document.getElementById('toc-body').innerHTML = `<div style="padding: 20px; text-align: center; color: red;">Error loading chapters. Please try again.</div>`;
+                document.getElementById('toc-body').innerHTML = `<div style="padding: 20px; text-align: center; color: red;">Error loading chapters.</div>`;
             }
         }
 
-        function closeTOCModal() {
-            document.getElementById('toc-modal').classList.remove('open');
-        }
-
-        // Close modal if clicking outside content
-        document.getElementById('toc-modal').addEventListener('click', function(e) {
-            if (e.target === this) closeTOCModal();
-        });
+        function closeTOCModal() { document.getElementById('toc-modal').classList.remove('open'); }
+        document.getElementById('toc-modal').addEventListener('click', function(e) { if (e.target === this) closeTOCModal(); });
     </script>
 </body>
 </html>
