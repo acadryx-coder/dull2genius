@@ -251,5 +251,18 @@
         function closeTOCModal() { document.getElementById('toc-modal').classList.remove('open'); }
         document.getElementById('toc-modal').addEventListener('click', function(e) { if (e.target === this) closeTOCModal(); });
     </script>
+
+    <script>
+        // Detect iOS and change the download button
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+            const downloadBtn = document.querySelector('a[href="DullToGenius.apk"]');
+            if (downloadBtn) {
+                downloadBtn.href = '/app'; 
+                downloadBtn.removeAttribute('download');
+                downloadBtn.innerHTML = '🌐 Read on Web (iOS)';
+            }
+        }
+    </script>
+
 </body>
 </html>
