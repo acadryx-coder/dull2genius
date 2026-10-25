@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>From Dull to Genius | Official Website</title>
+    <!-- Supabase Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
         html { scroll-behavior: smooth; scroll-padding-top: 90px; }
         :root {
@@ -28,8 +31,8 @@
         .hero-text p { font-size: 1.1rem; color: #555; margin-bottom: 30px; }
         .hero-buttons { display: flex; gap: 15px; flex-wrap: wrap; }
         
-        .btn-primary { background: var(--accent-color); color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1rem; transition: opacity 0.3s; }
-        .btn-secondary { background: var(--text-color); color: var(--bg-color); padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1rem; transition: opacity 0.3s; }
+        .btn-primary { background: var(--accent-color); color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1rem; transition: opacity 0.3s; cursor: pointer; border: none; }
+        .btn-secondary { background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1rem; transition: opacity 0.3s; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .btn-primary:hover, .btn-secondary:hover { opacity: 0.8; }
 
         .hero-image { flex: 1; min-width: 300px; display: flex; justify-content: center; }
@@ -61,6 +64,23 @@
         footer { background: var(--text-color); color: white; text-align: center; padding: 40px 20px; font-size: 0.9rem; }
         footer a { color: var(--bg-color); text-decoration: none; }
 
+        /* MODAL */
+        #toc-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; display: none; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(4px); }
+        #toc-modal.open { display: flex; }
+        .modal-content { background: var(--bg-color); border-radius: 16px; width: 100%; max-width: 500px; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0,0,0,0.2); overflow: hidden; }
+        .modal-header { padding: 20px; background: var(--card-bg); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h3 { font-family: var(--font-body); color: var(--accent-color); font-size: 1.4rem; }
+        .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-color); }
+        .modal-body { padding: 0; overflow-y: auto; flex: 1; background: var(--card-bg); }
+        
+        .toc-item { padding: 15px 20px; border-bottom: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 5px; }
+        .toc-label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent-color); }
+        .toc-name { font-family: var(--font-body); font-size: 1.05rem; color: var(--text-color); }
+        
+        .loading-spinner { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; color: gray; }
+        .spinner { border: 4px solid rgba(0,0,0,0.1); border-left-color: var(--accent-color); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
         /* MOBILE */
         @media (max-width: 768px) {
             nav { flex-direction: column; gap: 15px; padding: 15px 5%; text-align: center; }
@@ -88,6 +108,22 @@
         <button class="enter-btn" onclick="enterSite()">Enter Website 🎉</button>
     </div>
 
+    <!-- TOC MODAL -->
+    <div id="toc-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Table of Contents</h3>
+                <button class="close-modal" onclick="closeTOCModal()">✕</button>
+            </div>
+            <div class="modal-body" id="toc-body">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Fetching chapters...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <nav>
         <a href="#" class="nav-logo">From Dull to Genius</a>
         <div class="nav-links">
@@ -101,11 +137,11 @@
             <h1>How to Make All A's and Top the Class Without STRESS.</h1>
             <p>Stop struggling with boring textbooks. Learn the hidden secrets of academic success in plain, relatable Nigerian gist. Written by BFL's #1 Mentor.</p>
             <div class="hero-buttons">
-                <!-- Read Online (Points to the live app) -->
-                <a href="/app" class="btn-primary">📖 Read Online Now</a>
+                <!-- View TOC Button -->
+                <button class="btn-secondary" onclick="openTOCModal()">📑 View TOC for Free</button>
                 
-                <!-- Download APK (Direct download from hosted link) -->
-                <a href="DullToGenius.apk" download class="btn-secondary">
+                <!-- Download APK -->
+                <a href="DullToGenius.apk" download class="btn-primary">
                     📱 Download Book App
                 </a>
             </div>
@@ -164,12 +200,61 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
+        // --- CONFETTI ---
         function enterSite() {
             confetti({ particleCount: 300, spread: 160, origin: { y: 0.8 }, startVelocity: 60, gravity: 1.2, scalar: 1.2, ticks: 150 });
             var welcomeScreen = document.getElementById('welcome-screen');
             welcomeScreen.style.opacity = '0';
             setTimeout(() => { welcomeScreen.style.display = 'none'; }, 500);
         }
+
+        // --- TOC MODAL & SUPABASE ---
+        const SUPABASE_URL = 'https://ayjxzayhtcxekvjepgax.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_BIOlB9IWlxsvWuRvzMJo_Q_EM57iDGM';
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        let tocLoaded = false;
+
+        async function openTOCModal() {
+            document.getElementById('toc-modal').classList.add('open');
+            
+            // Only fetch from DB once
+            if (tocLoaded) return;
+
+            try {
+                const { data, error } = await db.from('chapters').select('title').order('chapter_number', { ascending: true });
+                if (error) throw error;
+
+                const body = document.getElementById('toc-body');
+                body.innerHTML = ''; // Clear spinner
+
+                data.forEach(chap => {
+                    const parts = chap.title.split(':');
+                    const label = parts.length > 1 ? parts[0].trim() : '';
+                    const name = parts.length > 1 ? parts.slice(1).join(':').trim() : chap.title;
+
+                    const div = document.createElement('div');
+                    div.className = 'toc-item';
+                    div.innerHTML = `
+                        ${label ? `<span class="toc-label">${label}</span>` : ''}
+                        <span class="toc-name">${name}</span>
+                    `;
+                    body.appendChild(div);
+                });
+                
+                tocLoaded = true;
+            } catch (err) {
+                document.getElementById('toc-body').innerHTML = `<div style="padding: 20px; text-align: center; color: red;">Error loading chapters. Please try again.</div>`;
+            }
+        }
+
+        function closeTOCModal() {
+            document.getElementById('toc-modal').classList.remove('open');
+        }
+
+        // Close modal if clicking outside content
+        document.getElementById('toc-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeTOCModal();
+        });
     </script>
 </body>
 </html>
