@@ -264,5 +264,25 @@
         }
     </script>
 
+
+    <script>
+        // Detect iOS OR Developer Device ID
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        
+        // Get the device ID generated in localStorage
+        const userDeviceId = localStorage.getItem('site_device_id');
+        const isDeveloper = userDeviceId === 'web_xyr4ojc9s'; 
+
+        if (isIOS || isDeveloper) {
+            const downloadBtn = document.querySelector('a[href="DullToGenius.apk"]');
+            if (downloadBtn) {
+                downloadBtn.href = '/app'; 
+                downloadBtn.removeAttribute('download');
+                // Change text to indicate it's the web version
+                downloadBtn.innerHTML = isDeveloper ? '🌐 Read on Web (Dev Test)' : '🌐 Read on Web (iOS)';
+            }
+        }
+    </script>
+
 </body>
 </html>
