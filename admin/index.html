@@ -65,6 +65,43 @@
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 0.9rem; }
         .form-group input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
+    
+        /* --- MOBILE RESPONSIVENESS --- */
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            
+            /* Transform sidebar into bottom nav */
+            .sidebar { 
+                width: 100%; height: 65px; position: fixed; bottom: 0; left: 0; 
+                flex-direction: row; padding: 0; z-index: 1000; 
+                justify-content: space-around; align-items: center;
+                border-top: 1px solid rgba(255,255,255,0.1);
+            }
+            .sidebar h2 { display: none; }
+            .nav-item { 
+                padding: 8px; font-size: 0.75rem; border-left: none; 
+                border-top: 3px solid transparent; flex: 1; text-align: center;
+                display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+            }
+            .nav-item.active { 
+                border-left-color: transparent; 
+                border-top-color: #f5af19; 
+                background: rgba(255,255,255,0.05); 
+            }
+            
+            /* Adjust main content */
+            .main-content { margin-bottom: 65px; height: calc(100vh - 65px); }
+            .top-bar { padding: 15px; }
+            .content-area { padding: 15px; }
+            
+            /* Stack stats vertically */
+            .stats-grid { grid-template-columns: 1fr; gap: 15px; }
+            
+            /* Make tables swipeable */
+            .data-card { overflow-x: auto; }
+            table { min-width: 600px; } 
+        }
+
     </style>
 </head>
 <body>
